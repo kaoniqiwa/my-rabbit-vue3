@@ -1,45 +1,91 @@
 # my-rabbit-vue3
 
-This template should help get you started developing with Vue 3 in Vite.
+## 导入 .vue 文件
 
-## Recommended IDE Setup
+env.d.ts
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+```ts
+declare module '*.vue' {
+  import { type ComponentOptions } from 'vue'
+  const componentOptions: ComponentOptions
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+  export default componentOptions
+}
 ```
 
-### Compile and Hot-Reload for Development
+## 路径别名
 
-```sh
-npm run dev
+`import HelloWorld from '@/components/HelloWorld.vue'`
+
+tsconfig.app.json
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
 ```
 
-### Type-Check, Compile and Minify for Production
+该配置项仅作为代码提示，不参与打包结果路径的转换.
 
-```sh
-npm run build
+vite.config.ts
+
+```ts
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  }
+})
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+构建工具 vite 负责将路径别名转成实际的绝对路径。
 
-```sh
-npm run test:unit
+## ElementPlus
+
+全局导入:
+
+```ts
+import 'element-plus/dist/index.css'
+import ElementPlus from 'element-plus'
+app.use(ElementPlus)
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+局部导入:
 
-```sh
-npm run lint
+安装插件:`npm i --save-dev unplugin-auto-import unplugin-vue-components`
+
+vite.config.ts
+
+```ts
+export default DefineComponent(() => {
+  return {
+    plugins: [
+      AutoImport({
+        resolvers: [ElementPlusResolver()]
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()]
+      })
+    ]
+  }
+})
+```
+
+Element 自定义主题:` import 'element-plus/theme-chalk/dark/css-vars.css'`
+
+类型提示:
+
+tsconfig.app.json
+
+```json
+{
+  "compilerOptions": {
+    "types": ["element-plus/global"]
+  }
+}
 ```
