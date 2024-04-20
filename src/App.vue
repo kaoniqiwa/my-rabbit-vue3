@@ -1,10 +1,43 @@
 <script setup lang="ts">
-import * as vue from 'vue'
-</script>
-<template>
-  <div>
-    <el-button type="primary" size="default" @click=""></el-button>
+import { ref } from 'vue';
 
+
+const tableData = [
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-02',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-04',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-01',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+]
+</script>
+
+<template>
+  <el-button type="primary">primay</el-button>
+  <el-button type="success">sucess</el-button>
+  <el-button type="warning" style="--el-color-warning:#1b3b6b">warning</el-button>
+
+
+
+  <div class="view">
+    <el-table :data="tableData" style="width: 100%" stripe>
+      <el-table-column prop="date" label="Date" width="180" />
+      <el-table-column prop="name" label="Name" width="180" />
+      <el-table-column prop="address" label="Address" />
+    </el-table>
   </div>
 </template>
-<style scoped lang="scss"></style>
