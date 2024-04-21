@@ -49,6 +49,8 @@ export default defineConfig({
 
 全局导入:
 
+main.ts
+
 ```ts
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -56,6 +58,12 @@ app.use(ElementPlus)
 ```
 
 局部导入:
+
+main.ts
+
+~~import ElementPlus from 'element-plus'~~  
+~~import 'element-plus/dist/index.css'~~  
+~~app.use(ElementPlus)~~
 
 安装插件:`npm i --save-dev unplugin-auto-import unplugin-vue-components`
 
@@ -77,6 +85,10 @@ export default DefineComponent(() => {
 ```
 
 Element 暗黑主题:
+
+全局导入的形式
+
+main.ts
 
 ```ts
 import 'element-plus/dist/index.css'

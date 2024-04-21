@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import * as vue from 'vue'
 </script>
 <template>
-  <router-view></router-view>
+  <div>category</div>
 </template>
 <style scoped lang="scss"></style>
