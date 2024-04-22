@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { getCategoryAPI } from '@/apis/layout';
-import type { ICategory } from '@/types/category';
-import { onMounted, ref } from 'vue';
+import { useCategoryStore } from '@/stores'
+import { storeToRefs } from 'pinia';
 
-const categoryList = ref<ICategory[]>([])
-const getCategory = async () => {
-  const { data: { result } } = await getCategoryAPI()
-  categoryList.value = result
+const { categoryList } = storeToRefs(useCategoryStore())
 
-}
-onMounted(() => getCategory())
+
+
 </script>
 <template>
   <header class="app-header">
