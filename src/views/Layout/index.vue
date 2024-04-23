@@ -9,7 +9,6 @@ import LayoutFooter from './components/LayoutFooter.vue'
 import { onMounted } from 'vue'
 
 const { getCategory } = useCategoryStore()
-
 onMounted(() => getCategory())
 </script>
 <template>

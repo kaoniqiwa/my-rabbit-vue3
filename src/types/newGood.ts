@@ -1,10 +1,9 @@
-interface IGood {
-  /**
-   * 商品描述
+export interface INewGood {
+  /* 商品描述
    */
   desc: string
   /**
-   * 商品折扣，如为null时，即无折扣
+   * 商品折扣
    */
   discount: null
   /**
@@ -16,9 +15,9 @@ interface IGood {
    */
   name: string
   /**
-   * 商品销量
+   * 商品订单数(销量)
    */
-  orderNum: null
+  orderNum: number
   /**
    * 商品图片
    */
@@ -28,11 +27,4 @@ interface IGood {
    */
   price: string
   [property: string]: any
-}
-export interface ICategory {
-  id: string
-  name: string
-  picture: string
-  goods: Array<IGood> | null
-  children: Array<ICategory> | null
 }
