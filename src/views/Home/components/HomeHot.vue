@@ -2,11 +2,11 @@
 import HomePanel from './HomePanel.vue'
 
 import { getHotAPI } from '@/apis/home'
-import type { IHotGood } from '@/types/hotGood';
+import type { IHomeHot } from '@/types';
 import { onMounted, ref } from 'vue';
 
 
-const hotList = ref<IHotGood[]>([])
+const hotList = ref<IHomeHot[]>([])
 const getHostList = async () => {
   const { data: { result } } = await getHotAPI()
   hotList.value = result

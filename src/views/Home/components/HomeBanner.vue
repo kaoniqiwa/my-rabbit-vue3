@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { getBannerAPI } from '@/apis/home'
-import type { IBanner } from '@/types/banner';
+import type { IHomeBanner } from '@/types';
 import { onMounted, ref } from 'vue';
 
-const bannerList = ref<Array<IBanner>>([])
+const bannerList = ref<Array<IHomeBanner>>([])
 const getBanner = async () => {
   const { data: { result } } = await getBannerAPI()
   bannerList.value = result

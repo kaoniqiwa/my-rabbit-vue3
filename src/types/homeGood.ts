@@ -1,13 +1,5 @@
 interface IGood {
   /**
-   * 商品描述
-   */
-  desc: string
-  /**
-   * 商品折扣，如为null时，即无折扣
-   */
-  discount: null
-  /**
    * 商品id
    */
   id: string
@@ -16,9 +8,14 @@ interface IGood {
    */
   name: string
   /**
+   * 商品描述
+   */
+  desc: string
+
+  /**
    * 商品销量
    */
-  orderNum: null
+  orderNum: number
   /**
    * 商品图片
    */
@@ -29,10 +26,19 @@ interface IGood {
   price: string
   [property: string]: any
 }
-export interface ICategory {
+
+export interface IHomeGood {
   id: string
-  name: string
   picture: string
-  goods: Array<IGood> | null
-  children: Array<ICategory> | null
+  name: string
+
+  saleInfo: string
+  goods: Array<IGood>
+  children: Array<{
+    id: string
+    layer: number
+    name: string
+    parent: null
+  }>
+  [property: string]: any
 }

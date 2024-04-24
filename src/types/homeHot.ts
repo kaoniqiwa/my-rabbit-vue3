@@ -1,4 +1,4 @@
-export interface IHotGood {
+export interface IHomeHot {
   /**
    * 推荐别名
    */

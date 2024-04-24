@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import HomePanel from './HomePanel.vue'
 
-import { findNewAPI } from '@/apis/home';
-import type { INewGood } from '@/types/newGood';
+import { onMounted, ref } from 'vue';
 
-const newList = ref<Array<INewGood>>([])
+import { findNewAPI } from '@/apis/home';
+import type { IHomeNew } from '@/types';
+
+const newList = ref<Array<IHomeNew>>([])
 const getNewList = async () => {
   const { data: { result } } = await findNewAPI()
   newList.value = result
@@ -20,7 +21,7 @@ onMounted(() => {
     <ul class="goods-list">
       <li v-for="item in newList" :key="item.id">
         <RouterLink to="/">
-          <img :src="item.picture" alt="">
+          <img v-img-lazy="item.picture">
           <p class="name"> {{ item.name }}</p>
           <p class="price">&yen;{{ item.price }}</p>
         </RouterLink>

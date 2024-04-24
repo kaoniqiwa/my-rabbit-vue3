@@ -1,17 +1,18 @@
 import httpInstance from '@/utils/http'
-import type { IBanner } from '@/types/banner'
-import type { IReponse } from '@/types/response'
-import type { INewGood } from '@/types/newGood'
-import type { IHotGood } from '@/types/hotGood'
+import type { IHomeBanner, IReponse, IHomeNew, IHomeHot, IHomeGood } from '@/types'
 
 export function getBannerAPI() {
-  return httpInstance.get<IReponse<IBanner[]>>('/home/banner')
+  return httpInstance.get<IReponse<IHomeBanner[]>>('/home/banner')
 }
 
 export function findNewAPI() {
-  return httpInstance.get<IReponse<INewGood[]>>('/home/new')
+  return httpInstance.get<IReponse<IHomeNew[]>>('/home/new')
 }
 
 export function getHotAPI() {
-  return httpInstance.get<IReponse<IHotGood[]>>('/home/hot')
+  return httpInstance.get<IReponse<IHomeHot[]>>('/home/hot')
+}
+
+export function getGoodsAPI() {
+  return httpInstance.get<IReponse<IHomeGood[]>>('/home/goods')
 }

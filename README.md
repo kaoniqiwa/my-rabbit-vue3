@@ -190,3 +190,40 @@ export default defineConfig({
   }
 })
 ```
+
+## 图片懒加载
+
+`npm i @vueuse/core`
+
+```vue
+<img v-img-lazy="item.picture" />
+```
+
+```ts
+import { useIntersectionObserver } from '@vueuse/core'
+
+// 注册全局指令
+app.directive<HTMLImageElement, string>('img-lazy', {
+  mounted(el, binding, vnode) {
+    useIntersectionObserver(el, ([{ isIntersecting }]) => {
+      // 图片进入视口后， src 为真正URL地址
+      if (isIntersecting) {
+        el.setAttribute('src', binding.value)
+      }
+    })
+  }
+})
+```
+
+## ts 类型运算
+
+```ts
+import type { IHomeGood } from '@/types'
+
+interface IGood {
+  good: IHomeGood['goods'][number]
+}
+defineProps<IGood>()
+```
+
+不能将 IHomeGood['goods'][number] 直接作为 defineProps 的泛型，需要本地声明接口

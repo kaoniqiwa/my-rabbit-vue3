@@ -1,4 +1,4 @@
-export interface IBanner {
+export interface IHomeBanner {
   /**
    * 轮播图跳转链接
    */

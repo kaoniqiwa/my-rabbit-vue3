@@ -1,4 +1,4 @@
-export interface INewGood {
+export interface IHomeNew {
   /* 商品描述
    */
   desc: string
