@@ -13,7 +13,8 @@ import HomeProduct from './components/HomeProduct.vue'
     <HomeBanner />
   </div>
   <HomeNew />
-  <!-- <HomeHot />
+  <HomeHot />
+  <!-- 
   <HomeProduct /> -->
 </template>
 <style scoped lang="scss">
