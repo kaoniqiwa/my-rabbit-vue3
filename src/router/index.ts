@@ -8,20 +8,24 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'layout',
       component: Layout,
       children: [
         {
           path: '',
+          name: 'home',
           component: () => import('@/views/Home/index.vue')
         },
         {
-          path: 'category',
+          path: 'category/:id',
+          name: 'category',
           component: () => import('@/views/Category/index.vue')
         }
       ]
     },
     {
       path: '/login',
+      name: 'login',
       component: Login
     }
   ]

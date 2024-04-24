@@ -1,4 +1,4 @@
-import { getCategoryAPI } from '@/apis/layout'
+import { getCategoryHeadAPI } from '@/apis/layout'
 import type { IHomeCategory } from '@/types'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -8,7 +8,7 @@ export const useCategoryStore = defineStore('category', () => {
   const getCategory = async () => {
     const {
       data: { result }
-    } = await getCategoryAPI()
+    } = await getCategoryHeadAPI()
     categoryList.value = result
   }
 
