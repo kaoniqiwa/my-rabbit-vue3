@@ -1,3 +1,7 @@
+export interface IHomeNewParams {
+  // 默认4
+  limit: number
+}
 export interface IHomeNew {
   /* 商品描述
    */

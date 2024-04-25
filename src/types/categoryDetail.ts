@@ -1,3 +1,6 @@
+export interface ICategoryDetailParams {
+  id: string
+}
 /**
  * 响应结果
  */

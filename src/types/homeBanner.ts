@@ -1,3 +1,7 @@
+export interface IHomeBannerParama {
+  // 1:为首页，2为分类商品页 默认1
+  distributionSite: '1' | '2'
+}
 export interface IHomeBanner {
   /**
    * 轮播图跳转链接

@@ -1,10 +1,9 @@
-import type { ICategoryDetail, IReponse } from '@/types'
+import type { ICategoryDetail, ICategoryDetailParams, IReponse } from '@/types'
 import httpInstance from '@/utils/http'
 
-export function getCategoryAPI() {
+/** 二级分类详情*/
+export function getCategoryAPI(params: ICategoryDetailParams) {
   return httpInstance.get<IReponse<ICategoryDetail>>('/category', {
-    params: {
-      id: '1005000'
-    }
+    params
   })
 }
