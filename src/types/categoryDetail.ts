@@ -1,10 +1,12 @@
+import type { IGood } from './homeGood'
+
 export interface ICategoryDetailParams {
   id: string
 }
 /**
- * 响应结果
+ * 一级分类
  */
-export interface ICategoryDetail {
+export interface ITopCategory {
   /**
    * 一级分类id
    */
@@ -21,12 +23,12 @@ export interface ICategoryDetail {
   /**
    * 下属分类数组
    */
-  children: Child[]
+  children: ISecondCategory[]
 
   [property: string]: any
 }
 
-export interface Child {
+export interface ISecondCategory {
   /**
    * 推荐品牌
    */
@@ -34,11 +36,11 @@ export interface Child {
   /**
    * 分类集合
    */
-  categories: null
+  categories: Array<{ id: string; layer: number; name: string; parent: null }>
   /**
    * 二级分类商品
    */
-  goods: Good[]
+  goods: IGood[]
   /**
    * 二级分类id
    */
@@ -66,34 +68,4 @@ export interface Child {
   [property: string]: any
 }
 
-export interface Good {
-  /**
-   * 商品描述
-   */
-  desc: string
-  /**
-   * 商品折扣
-   */
-  discount: null
-  /**
-   * 商品id
-   */
-  id: string
-  /**
-   * 商品名字
-   */
-  name: string
-  /**
-   * 商品订单数(销量)
-   */
-  orderNum: number
-  /**
-   * 商品图片
-   */
-  picture: string
-  /**
-   * 商品价格
-   */
-  price: string
-  [property: string]: any
-}
+

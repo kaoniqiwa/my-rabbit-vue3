@@ -227,3 +227,69 @@ defineProps<IGood>()
 ```
 
 不能将 IHomeGood['goods'][number] 直接作为 defineProps 的泛型，需要本地声明接口
+
+## 路由缓存问题
+
+```ts
+{
+  path: '/user/:id'
+}
+```
+
+/use/foo 和 /user/bar 切换时，复用 User 组件，路由参数发生变化，需要根据新的参数发起请求
+
+1. 禁止路由复用
+
+```vue
+<RouterView :key="$route.fullPath" />
+```
+
+2. 组件守卫
+
+```ts
+onBeforeRouteUpdate(async (to, from) => {
+  fetch('something')
+})
+```
+
+## tab 切换发送数据
+
+```ts
+export function useTemporary(temporaryParams: Ref<ITemporaryGoodParams>) {
+  const temporaryGoodList = ref<ITemporaryGood['items']>()
+  const getTemporaryGoodList = async () => {
+    const {
+      data: { result }
+    } = await getTemporaryGoodsAPI(temporaryParams.value)
+    temporaryGoodList.value = result.items
+  }
+
+  watchEffect(() => {
+    getTemporaryGoodList()
+  })
+  return {
+    temporaryGoodList
+  }
+}
+```
+
+通过 watchEffect 收集请求参数，自动发送请求,不需要 onMounted(),watch(),tabChangeCallback()
+
+```vue
+<script setup lang="ts">
+const temporaryParams = ref<ITemporaryGoodParams>({
+  categoryId: route.params.id as string,
+  page: 1,
+  pageSize: 20,
+  sortField: SortField.PUBLISHTIME
+})
+const { temporaryGoodList } = useTemporary(temporaryParams)
+</script>
+<template>
+  <el-tabs v-model="temporaryParams.sortField" @tab-change="temporaryParams.page = 1">
+    <el-tab-pane label="最新商品" :name="SortField.PUBLISHTIME"></el-tab-pane>
+    <el-tab-pane label="最高人气" :name="SortField.ORDERNUM"></el-tab-pane>
+    <el-tab-pane label="评论最多" :name="SortField.EVALUATENUM"></el-tab-pane>
+  </el-tabs>
+</template>
+```

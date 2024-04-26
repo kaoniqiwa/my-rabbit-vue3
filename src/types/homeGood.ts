@@ -1,4 +1,4 @@
-interface IGood {
+export interface IGood {
   /**
    * 商品id
    */
@@ -24,7 +24,6 @@ interface IGood {
    * 商品价格
    */
   price: string
-  [property: string]: any
 }
 
 export interface IHomeGood {

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { IHomeGood } from '@/types';
+import type { IGood } from '@/types';
+import { defineComponent } from 'vue';
 
-interface IGood {
-  good: IHomeGood['goods'][number]
-}
-defineProps<IGood>()
+defineComponent
+
+defineProps<{
+  good: IGood
+}>()
 </script>
 <template>
   <RouterLink to="/" class="goods-item">

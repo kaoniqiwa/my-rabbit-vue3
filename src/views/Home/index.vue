@@ -6,6 +6,7 @@ import HomeNew from './components/HomeNew.vue'
 import HomeProduct from './components/HomeProduct.vue'
 
 
+
 </script>
 <template>
   <div class="container">
