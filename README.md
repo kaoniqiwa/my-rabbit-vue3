@@ -293,3 +293,33 @@ const { temporaryGoodList } = useTemporary(temporaryParams)
   </el-tabs>
 </template>
 ```
+
+## 路由滚动行为
+
+```ts
+createRouter({
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      }
+    }
+  }
+})
+```
+
+## css content 中的人民币符号
+
+```css
+span::before {
+  content: '\00A5';
+  content: attr(entity);
+  font-size: 14px;
+}
+```
+
+content 指定 unicode 值，或者获取元素上的预设属性值

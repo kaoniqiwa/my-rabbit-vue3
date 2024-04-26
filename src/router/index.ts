@@ -23,7 +23,13 @@ const router = createRouter({
         },
         {
           path: 'category/sub/:id',
+          name: 'sub',
           component: () => import('@/views/SubCategory/index.vue')
+        },
+        {
+          path: 'detail/:id',
+          name: 'detail',
+          component: () => import('@/views/Detail/index.vue')
         }
       ]
     },
@@ -32,7 +38,18 @@ const router = createRouter({
       name: 'login',
       component: Login
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      }
+    }
+  }
 })
 
 export default router

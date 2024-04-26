@@ -21,6 +21,6 @@ export function getCategoryFilterAPI(params: { id: string }) {
   })
 }
 
-export function getTemporaryGoodsAPI(data: ITemporaryGoodParams = {}) {
+export function getTemporaryGoodsAPI(data: ITemporaryGoodParams = { page: 1, pageSize: 10 }) {
   return httpInstance.post<IReponse<ITemporaryGood>>('/category/goods/temporary', data)
 }
