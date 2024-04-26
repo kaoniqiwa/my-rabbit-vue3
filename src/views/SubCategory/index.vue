@@ -16,8 +16,11 @@ const temporaryParams = ref<ITemporaryGoodParams>({
 })
 
 const { filterData } = useFilter()
-const { temporaryGoodList } = useTemporary(temporaryParams)
+const { temporaryGoodList, noMore } = useTemporary(temporaryParams)
 
+const load = () => {
+  temporaryParams.value.page++
+}
 </script>
 
 <template>
@@ -36,7 +39,7 @@ const { temporaryGoodList } = useTemporary(temporaryParams)
         <el-tab-pane label="最高人气" :name="SortField.ORDERNUM"></el-tab-pane>
         <el-tab-pane label="评论最多" :name="SortField.EVALUATENUM"></el-tab-pane>
       </el-tabs>
-      <div class="body">
+      <div class="body" v-infinite-scroll="load" :infinite-scroll-disabled="noMore">
         <!-- 商品列表-->
         <GoodsItem v-for="good in temporaryGoodList" :good="good" :key="good.id" />
       </div>

@@ -6,7 +6,7 @@ export enum SortField {
   PRICE = 'price',
   EVALUATENUM = 'evaluateNum'
 }
-export interface ITemporaryGoodParams extends Partial<IPageDataParams> {
+export interface ITemporaryGoodParams extends IPageDataParams {
   categoryId?: string
   sortField?: SortField
 }
