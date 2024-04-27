@@ -323,3 +323,26 @@ span::before {
 ```
 
 content 指定 unicode 值，或者获取元素上的预设属性值
+
+## 枚举类型映射标题
+
+```ts
+export default abstract class Language {
+  static json = language
+
+  static HotGoodType(type: HotGoodType) {
+    switch (type) {
+      case HotGoodType.day:
+        return Language.json.HotGoodType.day
+      case HotGoodType.week:
+        return Language.json.HotGoodType.week
+      case HotGoodType.total:
+        return Language.json.HotGoodType.total
+      default:
+        return ''
+    }
+  }
+}
+```
+
+使用 Language 类统一管理标题映射

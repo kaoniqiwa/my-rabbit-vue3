@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { getGoodDetailAPI } from '@/apis/good';
-import type { GoodDetailDTO } from '@/types';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
+import DetailHot from './components/DetailHot.vue'
+import { useGoodDetail } from './composables/useGoodDetail'
 
-const route = useRoute()
-const goodDetail = ref<GoodDetailDTO>()
-const getGoodDetail = async (id: string) => {
-  const { data: { result } } = await getGoodDetailAPI({
-    id
-  })
-  goodDetail.value = result
+const { goodDetail } = useGoodDetail()
 
-}
-onMounted(() => getGoodDetail(route.params.id as string))
+
 </script>
 <template>
   <div class="xtx-goods-page">
@@ -21,13 +13,10 @@ onMounted(() => getGoodDetail(route.params.id as string))
       <div class="bread-container">
         <el-breadcrumb separator=">">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: `/category/${goodDetail?.categories[1].id}` }">{{
-            goodDetail?.categories[1].name }}
-          </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: `/category/sub/${goodDetail?.categories[0].id}` }">{{
-            goodDetail?.categories[0].name }}
-          </el-breadcrumb-item>
-          <el-breadcrumb-item>抓绒保暖，毛毛虫子儿童运动鞋</el-breadcrumb-item>
+          <el-breadcrumb-item v-for="item in goodDetail?.categories.slice().reverse()"
+            :to="{ path: `/category/sub/${item.id}` }">{{ item.name
+            }}</el-breadcrumb-item>
+
         </el-breadcrumb>
       </div>
       <div class="info-container">
@@ -114,8 +103,12 @@ onMounted(() => getGoodDetail(route.params.id as string))
               </div>
             </div>
             <!-- 24热榜+专题推荐 -->
-
             <div class="goods-aside">
+              <!-- 24小时 -->
+              <DetailHot :hot-type="1" />
+              <!-- 周 -->
+              <DetailHot :hot-type="2" />
+              <DetailHot :hot-type="3" />
             </div>
           </div>
         </div>
