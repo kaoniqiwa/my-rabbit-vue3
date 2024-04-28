@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ImageView from '@/components/ImageView/index.vue'
 import DetailHot from './components/DetailHot.vue'
 import { useGoodDetail } from './composables/useGoodDetail'
 
@@ -73,6 +72,7 @@ const { goodDetail } = useGoodDetail()
                 </dl>
               </div>
               <!-- sku组件 -->
+              <Sku :goodDetail="goodDetail"></Sku>
               <!-- 数据组件 -->
               <!-- 按钮组件 -->
               <div>
