@@ -346,3 +346,63 @@ export default abstract class Language {
 ```
 
 使用 Language 类统一管理标题映射
+
+## 放大镜
+
+```ts
+const { width: middleWidth, height: middleHeight } = useElementSize(middleRef)
+const layerWidth = ref(0)
+const layerHeight = ref(0)
+
+// layerRef 初始时为隐藏状态，宽高为0
+onMounted(() => {
+  const styleDeclaration = window.getComputedStyle(document.querySelector('.layer')!)
+  layerWidth.value = +styleDeclaration.width.replace('px', '')
+  layerHeight.value = +styleDeclaration.width.replace('px', '')
+})
+
+// 滑块位置
+const left = ref(0)
+const top = ref(0)
+
+// 背景图偏移量
+const positionX = ref(0)
+const positionY = ref(0)
+
+// 滑块偏移量范围
+const offsetXMin = computed(() => 0)
+const offsetXMax = computed(() => middleWidth.value - layerWidth.value)
+const offsetYMin = computed(() => 0)
+const offsetYMax = computed(() => middleHeight.value - layerHeight.value)
+
+// 鼠标在容器中的位置
+const { elementX, elementY, isOutside } = useMouseInElement(middleRef)
+
+// 设置 layer 的可见性
+const layerVisibility = ref(false)
+
+watch([elementX, elementY, isOutside, layerVisibility], () => {
+  if (isOutside.value) {
+    layerVisibility.value = !isOutside.value
+    return
+  }
+  left.value = Math.min(
+    Math.max(offsetXMin.value, elementX.value - layerWidth.value / 2),
+    offsetXMax.value
+  )
+  top.value = Math.min(
+    Math.max(offsetYMin.value, elementY.value - layerHeight.value / 2),
+    offsetYMax.value
+  )
+
+  // 计算出 layer 移动百分比，通过百分比设置背景图片位置，避免根据容器像素和图片原始像素的硬性换算
+  positionX.value = (left.value / (offsetXMax.value - offsetXMin.value)) * 100
+  positionY.value = (top.value / (offsetYMax.value - offsetYMin.value)) * 100
+
+  // 先设置 layer 的位置，再显示 layer,否则第一次显示时会有闪动的副作用，且无法通过 nextTick 控制
+  layerVisibility.value = !isOutside.value
+})
+```
+
+layer 元素隐藏时，useElementSize()获取到的宽高为 (0,0),虽然是响应式的，当 layer 显示时，会重新计算，定位 layer的位置，但是
+初次显示时，layer 的宽高获取到的仍是(0,0),鼠标第二次移动后，获取到正确宽高，导致初次鼠标移入时，具有闪动的副作用
