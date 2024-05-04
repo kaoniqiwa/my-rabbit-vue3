@@ -1,14 +1,25 @@
 <script setup lang="ts">
+// 使用ElMessage API 不会自动引入样式,这里需要手动引入
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+
 import type { FormInstance, FormRules, FormProps, ComponentSize } from 'element-plus'
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores'
 
 interface RuleForm {
   account: string
   password: string
   checkPass: string
   agree: boolean
-
 }
+
+// 发起登录请求
+const { getUserInfo } = useUserStore()
+
+// 路由对象
+const router = useRouter()
 
 /**标签对齐方式 */
 const labelPosition = ref<FormProps['labelPosition']>('right')
@@ -19,13 +30,12 @@ const formSize = ref<ComponentSize>('default')
 /**表单组件引用 */
 const ruleFormRef = ref<FormInstance>()
 
-/**表单域  "account": "xiaotuxian001","password": "123456"*/
+/**表单域 */
 const ruleForm = reactive<RuleForm>({
-  account: '',
-  password: '',
-  checkPass: '',
-  agree: true,
-
+  account: 'xiaotuxian001',
+  password: '123456',
+  checkPass: '123456',
+  agree: true
 })
 
 /**表单校验规则 */
@@ -41,7 +51,7 @@ const rules = ref<FormRules<RuleForm>>({
           callback(new Error('密码长度为6-14个字符'))
         } else {
           if (ruleForm.checkPass !== '') {
-            if (!ruleFormRef.value) return;
+            if (!ruleFormRef.value) return
             ruleFormRef.value.validateField('checkPass', (isValid: boolean) => {
               if (isValid) {
                 callback()
@@ -54,7 +64,6 @@ const rules = ref<FormRules<RuleForm>>({
           } else {
             callback()
           }
-
         }
       }
     }
@@ -78,23 +87,26 @@ const rules = ref<FormRules<RuleForm>>({
   agree: [
     {
       validator(rule: any, value: any, callback: any) {
-        console.log(rule);
-
         if (value) {
           callback()
         } else {
-          callback(new Error('sd'))
+          callback(new Error('请先同意协议'))
         }
       }
     }
-  ],
-
+  ]
 })
-const submitForm = async (formEl: FormInstance | undefined) => {
+const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  formEl.validate(async (valid, fields) => {
     if (valid) {
-      console.log('submit!')
+      await getUserInfo({
+        account: ruleForm.account,
+        password: ruleForm.password
+      })
+      ElMessage.success('登录成功!')
+      router.replace({ path: '/' })
+
     } else {
       console.log('error submit!', fields)
     }
@@ -108,9 +120,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 </script>
 <template>
   <div>
-    {{ ruleForm }}
     <header class="login-header">
-
       <div class="container">
         <h1 class="logo">
           <RouterLink to="/">小兔鲜</RouterLink>
@@ -145,7 +155,10 @@ const resetForm = (formEl: FormInstance | undefined) => {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn" @click="submitForm(ruleFormRef)">点击登录</el-button>
+              <el-form-item>
+                <el-button size="large" class="subBtn" @click="submitForm(ruleFormRef)">点击登录</el-button>
+                <el-button size="large" class="subBtn" @click="resetForm(ruleFormRef)">重置</el-button>
+              </el-form-item>
             </el-form>
           </div>
         </div>
@@ -239,11 +252,10 @@ const resetForm = (formEl: FormInstance | undefined) => {
 
     .account-box {
       .form {
-        padding: 0 20px 20px 20px;
+        padding: 0 30px 20px 20px;
 
         .subBtn {
           background: $xtxColor;
-          width: 100%;
           color: #fff;
         }
       }

@@ -1,5 +1,8 @@
+import 'element-plus/theme-chalk/el-message.css'
+import { ElMessage } from 'element-plus'
+
 // axios 基础封装
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 const httpInstance = axios.create({
   // 基地址
@@ -17,6 +20,14 @@ httpInstance.interceptors.request.use(
 // 相应拦截
 httpInstance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error)
+  (error) => {
+    // 超出 2xx 范围的状态码都会触发该函数。
+    // 统一错误提示
+    ElMessage.warning({
+      message: (error as AxiosError<{ code: string; message: string }>).response?.data.message
+    })
+
+    return Promise.reject(error.response?.data)
+  }
 )
 export default httpInstance
