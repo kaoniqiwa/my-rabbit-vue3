@@ -15,9 +15,13 @@ export const useUserStore = defineStore(
 
       userInfo.value = result
     }
+    const clearUserInfo = () => {
+      userInfo.value = undefined
+    }
     return {
       userInfo,
-      getUserInfo
+      getUserInfo,
+      clearUserInfo
     }
   },
   {

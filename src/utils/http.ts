@@ -3,6 +3,7 @@ import { ElMessage } from 'element-plus'
 
 // axios 基础封装
 import axios, { AxiosError } from 'axios'
+import { useUserStore } from '@/stores'
 
 const httpInstance = axios.create({
   // 基地址
@@ -13,7 +14,14 @@ const httpInstance = axios.create({
 
 // 请求拦截
 httpInstance.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    // 拼接 Bearer Token
+    const userStore = useUserStore()
+    if (userStore.userInfo?.token) {
+      config.headers.Authorization = `Bearer ${userStore.userInfo.token}`
+    }
+    return config
+  },
   (error) => Promise.reject(error)
 )
 
