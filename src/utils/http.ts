@@ -5,6 +5,9 @@ import { ElMessage } from 'element-plus'
 import axios, { AxiosError } from 'axios'
 import { useUserStore } from '@/stores'
 
+// useRouter 方法只能在 setup 环境中使用
+import router from '@/router'
+
 const httpInstance = axios.create({
   // 基地址
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
@@ -34,7 +37,17 @@ httpInstance.interceptors.response.use(
     ElMessage.warning({
       message: (error as AxiosError<{ code: string; message: string }>).response?.data.message
     })
+    // token 失效处理
+    if (error.response?.status === 401) {
+      // 清除本地数据
+      const userStore = useUserStore()
+      userStore.clearUserInfo()
 
+      // 重新登录
+      router.push({ name: 'login' })
+
+      return
+    }
     return Promise.reject(error.response?.data)
   }
 )
