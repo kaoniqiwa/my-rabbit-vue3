@@ -8,14 +8,15 @@ const { categoryList } = storeToRefs(useCategoryStore())
   <div class="home-category">
     <ul class="menu">
       <li v-for="item in categoryList" :key="item.id">
-        <RouterLink to="/">{{ item.name }}</RouterLink>
-        <RouterLink v-for="child in item.children?.slice(0, 2)" :key="child.id" to="/">{{ child.name }}</RouterLink>
+        <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
+        <RouterLink v-for="child in item.children?.slice(0, 2)" :key="child.id" :to="`/category/sub/${child.id}`">{{
+          child.name }}</RouterLink>
         <div class="layer">
           <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
           <ul>
             <li v-for="good in item.goods" :key="good.id">
-              <RouterLink to="/">
-                <img alt="" />
+              <RouterLink :to="`/detail/${good.id}`">
+                <img alt="" :src="good.picture" />
                 <div class="info">
                   <p class="name ellipsis-2">
                     {{ good.name }}

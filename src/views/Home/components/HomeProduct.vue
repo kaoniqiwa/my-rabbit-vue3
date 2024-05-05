@@ -20,7 +20,7 @@ onMounted(() => {
   <div class="home-product">
     <HomePanel v-for="product in goodsProduct" :key="product.id" :title="product.name">
       <div class="box">
-        <RouterLink class="cover" to="/">
+        <RouterLink class="cover" :to="`/category/${product.id}`">
           <img v-img-lazy="product.picture">
           <strong class="label">
             <span>{{ product.name }}馆</span>

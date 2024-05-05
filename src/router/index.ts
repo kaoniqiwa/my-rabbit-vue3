@@ -4,6 +4,7 @@ import Login from '@/views/Login/index.vue'
 import Layout from '@/views/Layout/index.vue'
 
 const router = createRouter({
+  // vite 提供的项目根路径
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {

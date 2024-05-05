@@ -1,4 +1,14 @@
-interface IGood {
+/**分类 */
+export interface CategoryDTO {
+  id: string
+  name: string
+  picture: string
+  /**只有叶节点才有商品信息 */
+  goods?: Array<GoodDTO>
+  children?: Array<CategoryDTO>
+}
+
+export interface GoodDTO {
   /**
    * 商品描述
    */
@@ -28,11 +38,4 @@ interface IGood {
    */
   price: string
   [property: string]: any
-}
-export interface IHomeCategory {
-  id: string
-  name: string
-  picture: string
-  goods: Array<IGood> | null
-  children: Array<IHomeCategory> | null
 }

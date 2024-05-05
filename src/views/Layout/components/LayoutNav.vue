@@ -3,12 +3,10 @@ import { useUserStore } from '@/stores'
 import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
-
 const router = useRouter();
 
+/**确认退出，跳转到登录页 */
 const confirm = () => {
-  console.log('sdsd');
-
   userStore.clearUserInfo();
   router.push({ name: "login" })
 }

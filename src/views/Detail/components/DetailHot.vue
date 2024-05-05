@@ -29,7 +29,7 @@ onMounted(() => {
 <template>
   <div class="goods-hot">
     <h3>{{ Language.HotGoodType(hotType) }}热榜 </h3>
-    <RouterLink to="/" class="goods-item" v-for="item in hotList" :key="item.id">
+    <RouterLink :to="`/detail/${item.id}`" class="goods-item" v-for="item in hotList" :key="item.id">
       <img v-img-lazy="item.picture" alt="">
       <p class="name ellipsis">{{ item.name }}</p>
       <p class="desc ellipsis">{{ item.desc }}</p>

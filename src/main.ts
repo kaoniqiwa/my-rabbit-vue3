@@ -1,11 +1,11 @@
 import './styles/common.scss'
-
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { lazyLoadPlugin } from '@/directives'
 import { componentPlugin } from '@/components'
+import { useTitle } from '@vueuse/core'
 
 import App from './App.vue'
 import router from './router'
@@ -20,5 +20,8 @@ app.use(pinia)
 app.use(router)
 app.use(lazyLoadPlugin)
 app.use(componentPlugin)
+
+// 设置浏览器标题
+useTitle('小兔鲜')
 
 app.mount('#app')

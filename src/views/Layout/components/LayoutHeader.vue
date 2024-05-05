@@ -1,9 +1,5 @@
 <script setup lang="ts">
-
 import LayoutHeaderUl from './LayoutHeaderUl.vue'
-
-
-
 </script>
 <template>
   <header class="app-header">

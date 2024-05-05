@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import * as vue from 'vue'
+const downLoadPage = () => {
+
+}
 </script>
 <template>
   <footer class="app_footer">
@@ -22,7 +24,7 @@ import * as vue from 'vue'
           <dd class="download">
             <span>扫描二维码</span>
             <span>立马下载APP</span>
-            <a href="javascript:;">下载页面</a>
+            <a href="javascript:;" @click="downLoadPage">下载页面</a>
           </dd>
         </dl>
         <dl>
@@ -107,6 +109,7 @@ import * as vue from 'vue'
       height: 92px;
       padding-top: 10px;
       border: 1px solid #ededed;
+      cursor: pointer;
 
       .iconfont {
         font-size: 36px;

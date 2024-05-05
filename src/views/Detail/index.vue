@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import DetailHot from './components/DetailHot.vue'
 import { useGoodDetail } from './composables/useGoodDetail'
+import { HotGoodType, } from '@/types';
 
 const { goodDetail } = useGoodDetail()
 
-
+const count = ref(1)
+const countChange = (count?: number) => {
+  console.log(count)
+}
 </script>
 <template>
   <div class="xtx-goods-page">
@@ -43,7 +48,7 @@ const { goodDetail } = useGoodDetail()
                 </li>
                 <li>
                   <p>品牌信息</p>
-                  <p>{{ goodDetail?.brand.name }}</p>
+                  <p style="min-height: 19px;">{{ goodDetail?.brand?.name ?? ' ' }}</p>
                   <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                 </li>
               </ul>
@@ -74,6 +79,7 @@ const { goodDetail } = useGoodDetail()
               <!-- sku组件 -->
               <Sku :goodDetail="goodDetail"></Sku>
               <!-- 数据组件 -->
+              <el-input-number v-model="count" @change="countChange" />
               <!-- 按钮组件 -->
               <div>
                 <el-button size="large" class="btn">
@@ -105,10 +111,11 @@ const { goodDetail } = useGoodDetail()
             <!-- 24热榜+专题推荐 -->
             <div class="goods-aside">
               <!-- 24小时 -->
-              <DetailHot :hot-type="1" />
+              <DetailHot :hot-type="HotGoodType.day" />
               <!-- 周 -->
-              <DetailHot :hot-type="2" />
-              <DetailHot :hot-type="3" />
+              <DetailHot :hot-type="HotGoodType.week" />
+              <!-- 总榜 -->
+              <DetailHot :hot-type="HotGoodType.total" />
             </div>
           </div>
         </div>

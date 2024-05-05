@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { useCategoryStore } from '@/stores'
-import { storeToRefs } from 'pinia';
-const { categoryList } = storeToRefs(useCategoryStore())
+import { storeToRefs } from 'pinia'
+
+const categoryStore = useCategoryStore()
+
+/**对于 Ref 类型的数据，在解构时的结果是 .value 属性值，会丢失响应式*/
+const { categoryList } = storeToRefs(categoryStore)
 </script>
 <template>
   <ul class="app-header-nav">
     <li class="home">
       <RouterLink to="/">首页</RouterLink>
     </li>
-    <li class="home" v-for="item in  categoryList " :key="item.id">
+    <li class="home" v-for="item in categoryList" :key="item.id">
       <RouterLink active-class="active" :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
     </li>
   </ul>

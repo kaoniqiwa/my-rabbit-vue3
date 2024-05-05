@@ -406,3 +406,114 @@ watch([elementX, elementY, isOutside, layerVisibility], () => {
 
 layer 元素隐藏时，useElementSize()获取到的宽高为 (0,0),虽然是响应式的，当 layer 显示时，会重新计算，定位 layer的位置，但是
 初次显示时，layer 的宽高获取到的仍是(0,0),鼠标第二次移动后，获取到正确宽高，导致初次鼠标移入时，具有闪动的副作用
+
+## 登录界面密码校验
+
+```ts
+const rules = ref<FormRules<RuleForm>>({
+  account: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+  password: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    {
+      validator(rule: any, value: any, callback: any) {
+        if (value == '') {
+          callback(new Error('密码不能为空'))
+        } else if (value.length < 6 || value.length > 14) {
+          callback(new Error('密码长度为6-14个字符'))
+        } else {
+          if (ruleForm.checkPass !== '') {
+            if (!ruleFormRef.value) return
+            ruleFormRef.value.validateField('checkPass', (isValid: boolean) => {
+              if (isValid) {
+                callback()
+              } else {
+                callback(new Error('两次密码不一致'))
+              }
+            })
+
+            return
+          } else {
+            callback()
+          }
+        }
+      }
+    }
+  ],
+  checkPass: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    {
+      validator(rule: any, value: any, callback: any) {
+        if (value == '') {
+          callback(new Error('密码不能为空'))
+        } else if (value.length < 6 || value.length > 14) {
+          callback(new Error('密码长度为6-14个字符'))
+        } else if (ruleForm.password !== '' && value !== ruleForm.password) {
+          callback(new Error('两次密码不一致'))
+        } else {
+          callback()
+        }
+      }
+    }
+  ],
+  agree: [
+    {
+      validator(rule: any, value: any, callback: any) {
+        if (value) {
+          callback()
+        } else {
+          callback(new Error('请先同意协议'))
+        }
+      }
+    }
+  ]
+})
+```
+
+注意联合校验时的循环依赖问题
+
+## axios 拦截器
+
+```ts
+// 请求拦截
+httpInstance.interceptors.request.use(
+  (config) => {
+    // 拼接 Bearer Token
+    const userStore = useUserStore()
+    if (userStore.userInfo?.token) {
+      config.headers.Authorization = `Bearer ${userStore.userInfo.token}`
+    }
+    return config
+  },
+  (error) => Promise.reject(error)
+)
+
+// 相应拦截
+httpInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // 超出 2xx 范围的状态码都会触发该函数。
+    // 统一错误提示
+    ElMessage.warning({
+      message: (error as AxiosError<{ code: string; message: string }>).response?.data.message
+    })
+    // token 失效处理
+    if (error.response?.status === 401) {
+      // 清除本地数据
+      const userStore = useUserStore()
+      userStore.clearUserInfo()
+
+      // 重新登录
+      router.push({ name: 'login' })
+
+      return
+    }
+    return Promise.reject(error.response?.data)
+  }
+)
+```
+
+注意 useRouter 获取 router 实例只能在 setup 环境中使用
+
+## 管理用户信息
+
+[pinia-plugin-persistedstate 插件](https://prazdevs.github.io/pinia-plugin-persistedstate/zh/guide/)
