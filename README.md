@@ -574,3 +574,19 @@ tsconfig.app.json
   "include": ["node.d.ts"]
 }
 ```
+
+## 登录跳转逻辑
+
+```ts
+if (isLocationQueryValue(route.query.redirectUrl)) {
+  route.query.redirectUrl
+    ? router.replace(decodeURIComponent(route.query.redirectUrl))
+    : router.replace({ path: '/' })
+}
+
+function isLocationQueryValue(
+  val: LocationQueryValue | LocationQueryValue[]
+): val is LocationQueryValue {
+  return !Array.isArray(val)
+}
+```

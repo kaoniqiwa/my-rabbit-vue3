@@ -44,9 +44,10 @@ httpInstance.interceptors.response.use(
       userStore.clearUserInfo()
 
       // 重新登录
-      router.push({ name: 'login' })
-
-      return
+      router.push({
+        name: 'login',
+        query: { redirectUrl: encodeURIComponent(router.currentRoute.value.fullPath) }
+      })
     }
     return Promise.reject(error.response?.data)
   }

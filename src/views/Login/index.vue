@@ -5,7 +5,8 @@ import 'element-plus/theme-chalk/el-message.css'
 
 import type { FormInstance, FormRules, FormProps, ComponentSize } from 'element-plus'
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute, routerKey, } from 'vue-router'
+import type { LocationQuery, LocationQueryValue } from 'vue-router'
 import { useUserStore } from '@/stores'
 
 interface RuleForm {
@@ -18,8 +19,11 @@ interface RuleForm {
 // 发起登录请求
 const { getUserInfo } = useUserStore()
 
-// 路由对象
+// 路由器对象
 const router = useRouter()
+
+// 当前路由记录
+const route = useRoute();
 
 /**标签对齐方式 */
 const labelPosition = ref<FormProps['labelPosition']>('right')
@@ -104,9 +108,12 @@ const submitForm = (formEl: FormInstance | undefined) => {
         account: ruleForm.account,
         password: ruleForm.password
       })
-      ElMessage.success('登录成功!')
-      router.replace({ path: '/' })
+      ElMessage.success('登录成功!');
 
+      // 对登录授权没有严格要求，没有登录仍可以访问商城，不需要在路由守卫中设置
+      if (isLocationQueryValue(route.query.redirectUrl)) {
+        route.query.redirectUrl ? router.replace(decodeURIComponent(route.query.redirectUrl)) : router.replace({ path: '/' })
+      }
     } else {
       console.log('error submit!', fields)
     }
@@ -116,6 +123,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
+}
+
+function isLocationQueryValue(val: LocationQueryValue | LocationQueryValue[]): val is LocationQueryValue {
+  return !Array.isArray(val)
 }
 </script>
 <template>

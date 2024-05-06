@@ -1,14 +1,26 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores'
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const userStore = useUserStore()
 const router = useRouter();
+const route = useRoute()
 
 /**确认退出，跳转到登录页 */
 const confirm = () => {
   userStore.clearUserInfo();
   router.push({ name: "login" })
+}
+
+// 获取当前url，登录成功后返回
+const navigateToLogin = () => {
+  router.push({
+    path: '/login',
+    query: {
+      redirectUrl: encodeURIComponent(route.fullPath)
+    }
+  })
+
 }
 </script>
 <template>
@@ -29,7 +41,7 @@ const confirm = () => {
 
         </template>
         <template v-else>
-          <li><a href="javascript:;" @click="$router.push({ name: 'login' })">请先登录</a></li>
+          <li><a href="javascript:;" @click="navigateToLogin">请先登录</a></li>
           <li><a href="javascript:;">帮助中心</a></li>
           <li><a href="javascript:;">关于我们</a></li>
         </template>
