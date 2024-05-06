@@ -1,3 +1,5 @@
+/// <reference types="./node.d.ts" />
+
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
@@ -8,8 +10,13 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { version } from './package.json'
-// https://vitejs.dev/config/
+
 export default defineConfig({
+  // 项目根目录，index.html 文件位于此
+  root: process.cwd(),
+  mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
+  // 设置打包后的及路径为相对路径'./'，默认是 '/'
+  base: '',
   // 定义全局常量替换方式
   define: {
     VERSION: JSON.stringify(version)

@@ -517,3 +517,60 @@ httpInstance.interceptors.response.use(
 ## 管理用户信息
 
 [pinia-plugin-persistedstate 插件](https://prazdevs.github.io/pinia-plugin-persistedstate/zh/guide/)
+
+## vite 构建白屏
+
+```js
+export default defineConfig({
+  // 设置打包后的及路径为 './',如果项目不是在网站根目录下
+  base: ''
+})
+```
+
+路由修改为 hash 模式
+
+```ts
+const router = createRouter({
+  history: createWebHashHistory(import.meta.env.BASE_URL)
+})
+```
+
+import.meta.env.BASE_URL 为 vite API 提供的路径
+
+## 扩展 NodeJS.process 类型
+
+node.d.ts
+
+```ts
+// 自定义环境变量
+declare module 'process' {
+  global {
+    namespace NodeJS {
+      interface process {
+        env: ProcessEnv
+      }
+      interface ProcessEnv {
+        NODE_ENV: string
+      }
+    }
+  }
+}
+```
+
+node.d.ts 在 vite.config.ts 中生效
+
+vite.config.ts
+
+```ts
+/// <reference types="./node.d.ts" />
+```
+
+node.d.ts 在项目 src 下生效
+
+tsconfig.app.json
+
+```json
+{
+  "include": ["node.d.ts"]
+}
+```
