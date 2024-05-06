@@ -22,6 +22,6 @@ app.use(lazyLoadPlugin)
 app.use(componentPlugin)
 
 // 设置浏览器标题
-useTitle('小兔鲜')
+useTitle(import.meta.env.VITE_APP_TITLE)
 
 app.mount('#app')
