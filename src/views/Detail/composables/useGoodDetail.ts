@@ -3,6 +3,8 @@ import type { GoodDetailDTO } from '@/types'
 import { ref, watchEffect, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 
+import data from '@/assets/data.json'
+
 export function useGoodDetail() {
   const route = useRoute()
   const goodDetail = ref<GoodDetailDTO>()
@@ -12,7 +14,8 @@ export function useGoodDetail() {
     } = await getGoodDetailAPI({
       id
     })
-    goodDetail.value = result
+    goodDetail.value = data as unknown as GoodDetailDTO
+    // goodDetail.value = result
   }
   watchEffect(() => {
     getGoodDetail(route.params.id as string)

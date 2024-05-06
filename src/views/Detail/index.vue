@@ -2,13 +2,26 @@
 import { ref } from 'vue';
 import DetailHot from './components/DetailHot.vue'
 import { useGoodDetail } from './composables/useGoodDetail'
-import { HotGoodType, } from '@/types';
+import { HotGoodType, type SkuView, } from '@/types';
+import { ElMessage } from 'element-plus';
 
 const { goodDetail } = useGoodDetail()
 
 const count = ref(1)
+const skuObj = ref<SkuView>({})
+const skuChange = (payload: SkuView) => {
+  skuObj.value = payload
+  count.value = 1
+
+}
 const countChange = (count?: number) => {
-  console.log(count)
+}
+const addCart = () => {
+  if (skuObj.value.id) {
+
+  } else {
+    ElMessage.warning('请选择规格')
+  }
 }
 </script>
 <template>
@@ -77,12 +90,14 @@ const countChange = (count?: number) => {
                 </dl>
               </div>
               <!-- sku组件 -->
-              <Sku :goodDetail="goodDetail"></Sku>
+              <Sku :goodDetail="goodDetail" @change="skuChange"></Sku>
               <!-- 数据组件 -->
-              <el-input-number v-model="count" @change="countChange" />
+              {{ skuObj.inventory }}
+              <el-input-number v-model="count" :disabled="!skuObj.inventory" :min="1" :max="skuObj.inventory"
+                @change="countChange" />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>

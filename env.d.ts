@@ -16,3 +16,25 @@ interface ImportMetaEnv {
   readonly VITE_SERVE_LOCAL: string
   readonly VITE_LOCAL: string
 }
+
+// 第三方 CommonJS 库
+declare module 'power-set' {
+  export interface PowerSetOptions<T> {
+    limit: number
+    sort: 'asc' | 'desc' | false
+    key: string
+    keySafe: boolean
+    filter: Partial<{
+      all: T[]
+      any: T[]
+      none: T[]
+    }>
+  }
+  type Flatten<Type> = Type extends Array<infer Item> ? Item : Type
+
+  declare function power<T = any>(
+    array: T[],
+    options?: Partial<PowerSetOptions<Flatten<T[]>>>
+  ): Array<T[]>
+  export default power
+}

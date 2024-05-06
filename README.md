@@ -590,3 +590,7 @@ function isLocationQueryValue(
   return !Array.isArray(val)
 }
 ```
+
+## JS 项目调试时无法打断点
+
+chromeDevtool => 设置=>偏好设置 => 关闭 JavaScript 源代码映射

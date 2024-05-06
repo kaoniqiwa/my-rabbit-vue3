@@ -109,7 +109,6 @@ export interface GoodDetailDTO {
   videoScale: number
   [property: string]: any
 }
-
 /**
  * 商品品牌
  */
@@ -401,4 +400,25 @@ export interface Value {
    */
   picture: null | string
   [property: string]: any
+}
+
+/************************客户端数据结构*****************/
+export interface ValueView extends Value {
+  selected?: boolean
+  disabled?: boolean
+}
+export interface ResultSpecView extends ResultSpec {
+  values: ValueView[]
+}
+export interface GoodDetail extends GoodDetailDTO {
+  specs: ResultSpecView[]
+}
+
+// 选中 sku 后传递给 Detail 组件的数据
+export interface SkuView {
+  id?: string
+  price?: string
+  oldPrice?: string
+  inventory?: number
+  specsText?: string
 }
