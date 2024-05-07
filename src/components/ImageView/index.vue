@@ -19,11 +19,13 @@ const { width: middleWidth, height: middleHeight } = useElementSize(middleRef)
 const layerWidth = ref(0)
 const layerHeight = ref(0)
 
+
+
 // layerRef 初始时为隐藏状态，宽高为0
 onMounted(() => {
-  const styleDeclaration = window.getComputedStyle(document.querySelector('.layer')!)
+  const styleDeclaration = window.getComputedStyle(document.querySelector('.goods-image .layer')!)
   layerWidth.value = +styleDeclaration.width.replace('px', '')
-  layerHeight.value = +styleDeclaration.width.replace('px', '')
+  layerHeight.value = +styleDeclaration.height.replace('px', '')
 })
 
 
@@ -41,6 +43,8 @@ const offsetXMax = computed(() => middleWidth.value - layerWidth.value)
 const offsetYMin = computed(() => 0);
 const offsetYMax = computed(() => middleHeight.value - layerHeight.value)
 
+
+
 // 鼠标在容器中的位置
 const { elementX, elementY, isOutside } = useMouseInElement(middleRef)
 
@@ -48,12 +52,15 @@ const { elementX, elementY, isOutside } = useMouseInElement(middleRef)
 const layerVisibility = ref(false)
 
 watch([elementX, elementY, isOutside, layerVisibility], () => {
+
   if (isOutside.value) {
     layerVisibility.value = !isOutside.value
     return
   }
   left.value = Math.min(Math.max(offsetXMin.value, elementX.value - layerWidth.value / 2), offsetXMax.value)
   top.value = Math.min(Math.max(offsetYMin.value, elementY.value - layerHeight.value / 2), offsetYMax.value)
+
+  console.log(left.value);
 
   // 计算出 layer 移动百分比，通过百分比设置背景图片位置，避免根据容器像素和图片原始像素的硬性换算
   positionX.value = left.value / (offsetXMax.value - offsetXMin.value) * 100

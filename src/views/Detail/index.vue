@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import DetailHot from './components/DetailHot.vue'
 import { useGoodDetail } from './composables/useGoodDetail'
 import { HotGoodType, type SkuView, } from '@/types';
@@ -16,21 +16,21 @@ const skuChange = (payload: SkuView) => {
   count.value = 1
 
 }
-const countChange = (count?: number) => {
-}
 const addCart = () => {
   if (skuObj.value.id && goodDetail.value) {
     cartStore.addCart({
       id: goodDetail.value.id,
       name: goodDetail.value.name,
       picture: skuObj.value.picture,
-      price: skuObj.value.price,
-      oldPrice: skuObj.value.oldPrice,
+      nowOriginalPrice: skuObj.value.price,
+      price: skuObj.value.oldPrice,
       count: count.value,
       skuId: skuObj.value.id,
       attrsText: skuObj.value.specsText,
       selected: true
     })
+    ElMessage.success('加入成功')
+
   } else {
     ElMessage.warning('请选择规格')
   }
@@ -83,8 +83,8 @@ const addCart = () => {
               <p class="g-name"> {{ goodDetail?.name }} </p>
               <p class="g-desc">{{ goodDetail?.desc }} </p>
               <p class="g-price">
-                <span entity="&yen;">{{ goodDetail?.price }}</span>
-                <span entity="&#x00A5;"> {{ goodDetail?.oldPrice }}</span>
+                <span entity="&yen;">{{ skuObj.price ? skuObj.price : goodDetail?.price }}</span>
+                <span entity="&#x00A5;"> {{ skuObj.oldPrice ? skuObj.oldPrice : goodDetail?.oldPrice }}</span>
               </p>
               <div class="g-service">
                 <dl>
@@ -104,9 +104,7 @@ const addCart = () => {
               <!-- sku组件 -->
               <Sku :goodDetail="goodDetail" @change="skuChange"></Sku>
               <!-- 数据组件 -->
-              {{ skuObj.inventory }}
-              <el-input-number v-model="count" :disabled="!skuObj.inventory" :min="1" :max="skuObj.inventory"
-                @change="countChange" />
+              <el-input-number v-model="count" :disabled="!skuObj.inventory" :min="1" :max="skuObj.inventory" />
               <!-- 按钮组件 -->
               <div>
                 <el-button size="large" class="btn" @click="addCart">

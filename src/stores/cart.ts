@@ -10,7 +10,7 @@ export const useCartStore = defineStore('cart', () => {
   const allCount = computed(() => cartList.value.reduce((prev, cur) => prev + (cur.count ?? 0), 0))
   const allPrice = computed(() => {
     return cartList.value
-      .reduce((prev, cur) => prev + +(cur.price ?? 0) * (cur.count ?? 0), 0)
+      .reduce((prev, cur) => prev + +(cur.nowOriginalPrice ?? 0) * (cur.count ?? 0), 0)
       .toFixed(2)
   })
 

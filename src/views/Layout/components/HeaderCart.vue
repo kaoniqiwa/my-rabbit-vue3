@@ -14,10 +14,10 @@ const deleCart = (skuId?: string) => {
       <i class="iconfont icon-cart"></i>
       <em>{{ cartList.length }}</em>
     </a>
-    <div class="layer">
+    <div class="wrapper">
       <div class="list">
         <div class="item" v-for="item in  cartList" :key="item.id">
-          <RouterLink to="">
+          <RouterLink :to="item.id ? `/detail/${item.id}` : ''">
             <img :src="item.picture" alt="" />
             <div class="center">
               <p class="name ellipsis-2">
@@ -26,7 +26,10 @@ const deleCart = (skuId?: string) => {
               <p class="attr ellipsis">{{ item.attrsText }}</p>
             </div>
             <div class="right">
-              <p class="price">&yen;{{ item.price }}</p>
+              <!-- 商品修改订单前的打折价-->
+              <p class="price">&yen;{{ item.nowOriginalPrice }}</p>
+              <!-- 商品未打折价 -->
+              <p class="old-price">&yen;{{ item.price }}</p>
               <p class="count">x{{ item.count }}</p>
             </div>
           </RouterLink>
@@ -76,7 +79,7 @@ const deleCart = (skuId?: string) => {
     }
   }
 
-  .layer {
+  .wrapper {
     opacity: 0;
     transition: all 0.4s 0.2s;
     transform: translateY(-200px) scale(1, 0);
@@ -149,6 +152,12 @@ const deleCart = (skuId?: string) => {
               color: $priceColor;
             }
 
+            .old-price {
+              font-size: 16px;
+              color: #999;
+              text-decoration: line-through;
+            }
+
             .count {
               color: #999;
               margin-top: 5px;
@@ -186,7 +195,7 @@ const deleCart = (skuId?: string) => {
   }
 
   &:hover {
-    .layer {
+    .wrapper {
       opacity: 1;
       transform: none;
     }
