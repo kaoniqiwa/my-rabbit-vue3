@@ -351,6 +351,8 @@ export interface Skus {
    * sku的编码
    */
   skuCode: string
+  picture: string
+
   /**
    * 规格集合(和详情中specs的顺序一定要保持一致)
    */
@@ -421,4 +423,5 @@ export interface SkuView {
   oldPrice?: string
   inventory?: number
   specsText?: string
+  picture?: string
 }

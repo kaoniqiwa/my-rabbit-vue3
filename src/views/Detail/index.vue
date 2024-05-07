@@ -4,8 +4,10 @@ import DetailHot from './components/DetailHot.vue'
 import { useGoodDetail } from './composables/useGoodDetail'
 import { HotGoodType, type SkuView, } from '@/types';
 import { ElMessage } from 'element-plus';
+import { useCartStore } from '@/stores'
 
 const { goodDetail } = useGoodDetail()
+const cartStore = useCartStore()
 
 const count = ref(1)
 const skuObj = ref<SkuView>({})
@@ -17,8 +19,18 @@ const skuChange = (payload: SkuView) => {
 const countChange = (count?: number) => {
 }
 const addCart = () => {
-  if (skuObj.value.id) {
-
+  if (skuObj.value.id && goodDetail.value) {
+    cartStore.addCart({
+      id: goodDetail.value.id,
+      name: goodDetail.value.name,
+      picture: skuObj.value.picture,
+      price: skuObj.value.price,
+      oldPrice: skuObj.value.oldPrice,
+      count: count.value,
+      skuId: skuObj.value.id,
+      attrsText: skuObj.value.specsText,
+      selected: true
+    })
   } else {
     ElMessage.warning('请选择规格')
   }

@@ -95,6 +95,7 @@ const clickSpec = (spec: ResultSpecView, val: ValueView) => {
           price: sku.price,
           oldPrice: sku.oldPrice,
           inventory: sku.inventory,
+          picture: sku.picture,
           specsText: sku.specs.reduce((prev, cur) => prev + ` ${cur.name}：${cur.valueName}`, '')
         })
 

@@ -1,6 +1,6 @@
 <!-- 吸顶导航 -->
 <script setup lang="ts">
-import LayoutHeaderUl from './LayoutHeaderUl.vue'
+import LayoutHeaderUI from './LayoutHeaderUI.vue'
 
 import { useScroll } from '@vueuse/core'
 
@@ -11,8 +11,7 @@ const { y } = useScroll(window);
   <div class="app-header-sticky" :class="{ show: y > 78 }">
     <div class="container">
       <RouterLink class="logo" to="/" />
-      <LayoutHeaderUl />
-
+      <LayoutHeaderUI />
       <div class="right">
         <RouterLink to="/">品牌</RouterLink>
         <RouterLink to="/">专题</RouterLink>
