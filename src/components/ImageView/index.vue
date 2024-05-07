@@ -60,7 +60,6 @@ watch([elementX, elementY, isOutside, layerVisibility], () => {
   left.value = Math.min(Math.max(offsetXMin.value, elementX.value - layerWidth.value / 2), offsetXMax.value)
   top.value = Math.min(Math.max(offsetYMin.value, elementY.value - layerHeight.value / 2), offsetYMax.value)
 
-  console.log(left.value);
 
   // 计算出 layer 移动百分比，通过百分比设置背景图片位置，避免根据容器像素和图片原始像素的硬性换算
   positionX.value = left.value / (offsetXMax.value - offsetXMin.value) * 100
