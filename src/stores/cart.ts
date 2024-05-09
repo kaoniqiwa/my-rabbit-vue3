@@ -7,7 +7,6 @@ export const useCartStore = defineStore(
   () => {
     /********************state**********************************************/
     const cartList = ref<Array<CartDTO>>([])
-
     // 1. 总的数量 所有项的count之和
     const allCount = computed(() =>
       cartList.value.reduce((prev, cur) => prev + (cur.count ?? 0), 0)
@@ -24,15 +23,6 @@ export const useCartStore = defineStore(
         .filter((v) => !!v.selected)
         .reduce((prev, cur) => prev + (cur.count ?? 0), 0)
     })
-    watch(
-      cartList,
-      () => {
-        console.log('sdsd')
-      },
-      {
-        deep: true
-      }
-    )
 
     // 4. 已选择商品价钱合计
     const selectedPrice = computed(() => {
@@ -41,6 +31,8 @@ export const useCartStore = defineStore(
         .reduce((prev, cur) => prev + +(cur.nowOriginalPrice ?? 0) * (cur.count ?? 0), 0)
         .toFixed(2)
     })
+    // 5. 全选反选逻辑
+    const isAll = computed(() => cartList.value.every((cart) => !!cart.selected))
 
     /********************action**********************************************/
     const addCart = (cart: CartDTO) => {
@@ -59,14 +51,20 @@ export const useCartStore = defineStore(
       }
     }
 
+    const allCheck = (selected: boolean) => {
+      cartList.value.forEach((cart) => (cart.selected = !!selected))
+    }
+
     return {
       cartList,
       addCart,
       delCart,
+      allCheck,
       allCount,
       allPrice,
       selectedCount,
-      selectedPrice
+      selectedPrice,
+      isAll
     }
   },
   {

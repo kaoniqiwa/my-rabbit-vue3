@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { useCartStore } from '@/stores'
-import type { CartDTO } from '@/types/cart';
 import type { CheckboxValueType } from 'element-plus';
+import { storeToRefs } from 'pinia';
 const cartStore = useCartStore()
-const { cartList, allCount, selectedCount, selectedPrice } = cartStore
+const { cartList, allCount, selectedCount, selectedPrice, isAll, } = storeToRefs(cartStore)
+const { allCheck } = cartStore
 
-const singleCheck = (selected: CheckboxValueType, cart: CartDTO) => {
-  console.log(selected);
-  cart.selected = !!selected
 
-}
 </script>
 <template>
   <div class="xtx-cart-page">
@@ -19,7 +16,7 @@ const singleCheck = (selected: CheckboxValueType, cart: CartDTO) => {
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox />
+                <el-checkbox @change="(selected: CheckboxValueType) => allCheck(!!selected)" :model-value="isAll" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -32,7 +29,7 @@ const singleCheck = (selected: CheckboxValueType, cart: CartDTO) => {
           <tbody>
             <tr v-for="cart in cartList" :key="cart.skuId">
               <td>
-                <el-checkbox :model-value="!!cart.selected" @change="singleCheck($event, cart)" />
+                <el-checkbox v-model="cart.selected" />
               </td>
               <td>
                 <div class="goods">
