@@ -5,8 +5,8 @@ import 'element-plus/theme-chalk/el-message.css'
 
 import type { FormInstance, FormRules, FormProps, ComponentSize } from 'element-plus'
 import { reactive, ref } from 'vue'
-import { useRouter, useRoute, routerKey, } from 'vue-router'
-import type { LocationQuery, LocationQueryValue } from 'vue-router'
+import { useRouter, useRoute, } from 'vue-router'
+import type { LocationQueryValue } from 'vue-router'
 import { useUserStore } from '@/stores'
 
 interface RuleForm {

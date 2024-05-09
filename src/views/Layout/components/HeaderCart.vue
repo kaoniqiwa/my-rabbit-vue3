@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useCartStore } from '@/stores'
+import { storeToRefs } from 'pinia';
 const cartStore = useCartStore()
-const { cartList } = cartStore
-
+const { cartList } = storeToRefs(cartStore)
 
 const deleCart = (skuId?: string) => {
   skuId && cartStore.delCart(skuId)

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useCartStore } from '@/stores'
+import type { CartDTO } from '@/types/cart';
 import type { CheckboxValueType } from 'element-plus';
 import { storeToRefs } from 'pinia';
 const cartStore = useCartStore()
 const { cartList, allCount, selectedCount, selectedPrice, isAll, } = storeToRefs(cartStore)
-const { allCheck } = cartStore
-
+const { allCheck, singleCheck, singleNum, delCart } = cartStore
 
 </script>
 <template>
@@ -16,7 +16,7 @@ const { allCheck } = cartStore
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox @change="(selected: CheckboxValueType) => allCheck(!!selected)" :model-value="isAll" />
+                <el-checkbox :model-value="isAll" @change="(selected: CheckboxValueType) => allCheck(!!selected)" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -29,7 +29,8 @@ const { allCheck } = cartStore
           <tbody>
             <tr v-for="cart in cartList" :key="cart.skuId">
               <td>
-                <el-checkbox v-model="cart.selected" />
+                <el-checkbox :model-value="cart.selected"
+                  @change="(selected: CheckboxValueType) => singleCheck(!!selected, cart)" />
               </td>
               <td>
                 <div class="goods">
@@ -48,14 +49,16 @@ const { allCheck } = cartStore
                 <p>&yen;{{ cart.nowOriginalPrice }}</p>
               </td>
               <td class="tc">
-                <el-input-number v-model="cart.count" class="xtx-numbox" :min="1" />
+                <el-input-number :model-value="cart.count" class="xtx-numbox" :min="1"
+                  @change="singleNum($event as number, cart)" />
               </td>
               <td class="tc">
                 <p class="f16 red">&yen;{{ (+(cart.nowOriginalPrice ?? 0) * (cart.count ?? 0)).toFixed(2) }}</p>
               </td>
               <td class="tc">
                 <p>
-                  <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消">
+                  <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消" @confirm="
+                    delCart(cart.skuId ?? '')">
                     <template #reference>
                       <a href="javascript:;">删除</a>
                     </template>

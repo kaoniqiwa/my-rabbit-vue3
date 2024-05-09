@@ -65,3 +65,38 @@ export interface CartDTO {
   stock?: number
   [property: string]: any
 }
+
+export interface AddCartParams {
+  count: number
+  /**
+   * 商品sku的id
+   */
+  skuId: string
+}
+
+export interface DeleteCartParams {
+  ids: Array<string>
+}
+
+export interface MergeCartParams {
+  /* 商品数量
+   */
+  count: number
+  /**
+   * 商品选中状态
+   */
+  selected: string
+  /**
+   * 商品sku的id
+   */
+  skuId: string
+}
+
+export interface UpdateCartParams {
+  selected?: boolean
+  count?: number
+}
+export interface BatchUpdateCartParams {
+  selected: boolean
+  ids: Array<string>
+}
