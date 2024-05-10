@@ -6,6 +6,8 @@ import httpInstance from '@/utils/http'
 export function createOrderAPI(data: CreateOrderParams) {
   return httpInstance.post<IReponse<CreateOrderResult>>('/member/order', data)
 }
+
+/**获取订单详情*/
 export function getOrderAPI(orderId: string) {
   return httpInstance.get<IReponse<OrderDetailDTO>>(`/member/order/${orderId}`)
 }

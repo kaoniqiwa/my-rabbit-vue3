@@ -51,8 +51,8 @@ const router = createRouter({
           component: () => import('@/views/Pay/index.vue')
         },
         {
-          path: 'payback',
-          name: 'payback',
+          path: 'paycallback',
+          name: 'paycallback',
           component: () => import('@/views/Pay/PayBack.vue')
         }
       ]

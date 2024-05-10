@@ -6,18 +6,23 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 
 // 1788819037740863490
-console.log(route);
-
+// 沙箱账号:scobys4865@sandbox.com 密码:111111
+const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
+const backURL = 'http://127.0.0.1:5173/payback'
+const redirectUrl = encodeURIComponent(backURL)
+const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
 
 const orderDetail = ref<OrderDetailDTO>()
-const getPayInfo = async () => {
+const getOrderInfo = async () => {
   if (route.query.id) {
     const { data: { result } } = await getOrderAPI(route.query.id as string)
     orderDetail.value = result
   }
 }
+
+
 onMounted(() => {
-  getPayInfo()
+  getOrderInfo()
 })
 </script>
 <template>
@@ -41,7 +46,7 @@ onMounted(() => {
         <div class="item">
           <p>支付平台</p>
           <a class="btn wx" href="javascript:;"></a>
-          <a class="btn alipay" href="'sd'"></a>
+          <a class="btn alipay" target="_blank" :href="payUrl"></a>
         </div>
         <div class="item">
           <p>支付方式</p>

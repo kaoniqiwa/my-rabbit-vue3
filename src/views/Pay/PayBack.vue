@@ -1,4 +1,25 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getOrderAPI } from '@/apis/order'
+import type { OrderDetailDTO } from '@/types';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+const route = useRoute()
+
+
+// http://localhost:5173/paycallback?payResult=true&orderId=1788858245616504833
+
+const orderDetail = ref<OrderDetailDTO>()
+const getOrderInfo = async () => {
+  if (route.query.id) {
+    const { data: { result } } = await getOrderAPI(route.query.id as string)
+    orderDetail.value = result
+  }
+}
+
+onMounted(() => {
+  getOrderInfo()
+})
+</script>
 <template>
   <div class="xtx-pay-page">
     <div class="container">
