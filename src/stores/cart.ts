@@ -165,6 +165,7 @@ export const useCartStore = defineStore(
       delCart,
       allCheck,
       singleCheck,
+      getCartList,
       allCount,
       allPrice,
       selectedCount,
