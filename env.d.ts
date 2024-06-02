@@ -38,3 +38,13 @@ declare module 'power-set' {
   ): Array<T[]>
   export default power
 }
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $filters: {
+      toFixed: (value: any, digital: number) => string
+    }
+  }
+}
+
+export {}

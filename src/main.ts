@@ -24,4 +24,29 @@ app.use(componentPlugin)
 // 设置浏览器标题
 useTitle(import.meta.env.VITE_APP_TITLE)
 
+app.config.globalProperties.$filters = {
+  toFixed(value: any, digital: number) {
+    if (typeof value === 'number') {
+      if (Object.is(value, NaN)) {
+        throw new Error('非法数值 NaN')
+      } else {
+        return value.toFixed(digital)
+      }
+    } else if (typeof value === 'string') {
+      // 字符串类型数值
+      if (!Object.is(Number(value), NaN) || value !== '') {
+        let index = value.indexOf('.')
+        if (index === -1) {
+          value += '.'
+        }
+        let arr = value.split('.')
+        arr[1] = arr[1].substring(0, 2).padEnd(2, '0')
+
+        return arr.join('.')
+      }
+    }
+    return ''
+  }
+}
+
 app.mount('#app')

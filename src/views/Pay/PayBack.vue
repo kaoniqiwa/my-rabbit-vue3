@@ -2,38 +2,48 @@
 import { getOrderAPI } from '@/apis/order'
 import type { OrderDetailDTO } from '@/types';
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+
+
+const router = useRouter();
 const route = useRoute()
+const payResult = JSON.parse(route.query.payResult as string)
 
 
 // http://localhost:5173/paycallback?payResult=true&orderId=1788858245616504833
 
 const orderDetail = ref<OrderDetailDTO>()
 const getOrderInfo = async () => {
-  if (route.query.id) {
-    const { data: { result } } = await getOrderAPI(route.query.id as string)
+  if (route.query.orderId) {
+    const { data: { result } } = await getOrderAPI(route.query.orderId as string)
     orderDetail.value = result
+
   }
 }
-
+const goHome = () => {
+  router.push(
+    "/"
+  )
+}
 onMounted(() => {
   getOrderInfo()
 })
 </script>
 <template>
   <div class="xtx-pay-page">
+
     <div class="container">
       <!-- 支付结果 -->
       <div class="pay-result">
-        <span class="iconfont icon-queren2 green"></span>
-        <span class="iconfont icon-shanchu red"></span>
-        <p class="tit">支付成功</p>
+        <span class="iconfont icon-queren2 green" v-if="payResult"></span>
+        <span class="iconfont icon-shanchu red" v-else></span>
+        <p class="tit">支付{{ payResult ? '成功' : '失败' }}</p>
         <p class="tip">我们将尽快为您发货，收货期间请保持手机畅通</p>
-        <p>支付方式：<span>支付宝</span></p>
-        <p>支付金额：<span>¥200.00</span></p>
+        <p>支付方式：<span>{{ orderDetail?.payType === 1 ? '支付宝' : '微信' }}</span></p>
+        <p>支付金额：<span class="red">¥{{ $filters.toFixed(orderDetail?.payMoney, 2) }}</span></p>
         <div class="btn">
           <el-button type="primary" style="margin-right:20px">查看订单</el-button>
-          <el-button>进入首页</el-button>
+          <el-button @click="goHome">进入首页</el-button>
         </div>
         <p class="alert">
           <span class="iconfont icon-tip"></span>

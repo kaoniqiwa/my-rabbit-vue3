@@ -3,7 +3,14 @@ import { getOrderAPI } from '@/apis/order'
 import type { OrderDetailDTO } from '@/types';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+
+import { useCountDown } from '@/composables/useCountDown'
+const { start, formatTime } = useCountDown();
+
+
 const route = useRoute()
+
+// http://localhost:5173/pay?id=1797155919172210689
 
 // 1788819037740863490
 // 沙箱账号:scobys4865@sandbox.com 密码:111111
@@ -16,13 +23,19 @@ const orderDetail = ref<OrderDetailDTO>()
 const getOrderInfo = async () => {
   if (route.query.id) {
     const { data: { result } } = await getOrderAPI(route.query.id as string)
-    orderDetail.value = result
+    orderDetail.value = result;
+    if (orderDetail.value.countdown > 0) {
+
+      start(orderDetail.value.countdown)
+    }
+    console.log(result);
+
+
+
   }
 }
-
-
 onMounted(() => {
-  getOrderInfo()
+  getOrderInfo();
 })
 </script>
 <template>
@@ -33,7 +46,7 @@ onMounted(() => {
         <span class="icon iconfont icon-queren2"></span>
         <div class="tip">
           <p>订单提交成功！请尽快完成支付。</p>
-          <p>支付还剩 <span>sd</span>, 超时后将取消订单</p>
+          <p>支付还剩 <span>{{ formatTime }}</span>, 超时后将取消订单</p>
         </div>
         <div class="amount">
           <span>应付总额：</span>
